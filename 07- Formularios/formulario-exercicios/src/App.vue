@@ -2,7 +2,7 @@
 	<div id="app">
 		<h1>Registrar Reclamação</h1>
 		<div class="conteudo">
-			<form class="painel">
+			<div class="painel" v-if="!enviado">
 				<div class="cabecalho">Formulário</div>
 				<Rotulo nome="E-mail">
 					<input type="text" v-model.lazy.trim="usuario.email">
@@ -37,12 +37,12 @@
 					</select>
 				</Rotulo>
 				<Rotulo nome="Primeira Reclamação?">
-					<Escolha />
+					<Escolha v-model="escolha" />
 				</Rotulo>
 				<hr>
-				<button>Enviar</button>
-			</form>
-			<div class="painel">
+				<button @click.prevent="enviar">Enviar</button>
+			</div>
+			<div class="painel" v-else>
 				<div class="cabecalho">Resultado</div>
 				<Rotulo nome="E-mail">
 					<span>{{ usuario.email }}</span>
@@ -70,7 +70,7 @@
 					<span>{{ prioridade }} {{ tipoPrioridade }}</span>
 				</Rotulo>
 				<Rotulo nome="Primeira Reclamação?">
-					<span>???</span>
+					<span>{{ primeira() }}</span>
 				</Rotulo>
 			</div>
 		</div>
@@ -90,6 +90,7 @@ export default {
 			caracteristicas: [],
 			produto: 'Web',
 			prioridade: 1,
+			enviado: false,
 			prioridades: [
 				{ codigo: 1, nome: 'Baixa' },
 				{ codigo: 2, nome:  'Moderada' },
@@ -99,7 +100,16 @@ export default {
 				email: '',
 				senha: '',
 				idade: 25,
-			}
+			},
+			escolha: false
+		}
+	},
+	methods: {
+		enviar(){
+			this.enviado = true
+		},
+		primeira(){
+			return this.escolha ? 'Sim' : 'Não'
 		}
 	}
 }
@@ -143,7 +153,7 @@ body {
 	font-size: 1.4rem;
 }
 
-#app form button {
+.painel button {
 	float: right;
 	margin: 10px 0px;
 	padding: 10px 20px;
