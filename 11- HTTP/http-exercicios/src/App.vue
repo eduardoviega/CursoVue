@@ -62,8 +62,11 @@ export default {
 			this.usuario = { ...this.usuarios[id] }
 		},
 		excluir(id) {
-			this.$http.delete(`/usuarios/${id}`)
-				.then(() => this.limpar())
+			this.$http.delete(`/usuarios/${id}.json`)
+				.then(() => {
+					this.limpar()
+					this.obterUsuarios()
+				})
 				.catch(err => {
 					this.limpar()
 					this.mensagens.push({
@@ -82,6 +85,9 @@ export default {
 						texto: 'Operação realizada com sucesso!',
 						tipo: 'success'
 					})
+					setTimeout(() => {
+						this.limpar()
+					}, 2000)
 				})
 		},
 		obterUsuarios() {
