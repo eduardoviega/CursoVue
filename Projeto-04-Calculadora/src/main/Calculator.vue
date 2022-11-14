@@ -65,7 +65,7 @@ export default {
             }
         },
         addDigit(n){
-            if(n == '.' && this.displayValue.includes('.')){
+            if(n == '.' && this.displayValue.includes(".")){
                 return
             }
             
